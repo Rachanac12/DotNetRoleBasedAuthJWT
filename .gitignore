@@ -1,0 +1,18 @@
+# Global ignores
+.DS_Store
+.env
+*.db
+*.suo
+
+# Backend
+API/bin/
+API/obj/
+API/*.db
+API/*.user
+API/*.log
+
+# Frontend
+client/node_modules/
+client/dist/
+client/.angular/
+client/.vscode/
