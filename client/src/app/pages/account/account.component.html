@@ -1,0 +1,39 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white shadow-md rounded-lg max-w-sm w-full p-6">
+    <h1 class="text-xl font-bold text-gray-700 text-center">Account Detail</h1>
+
+    <div *ngIf="accountDetail$ | async as user">
+      <div class="flex justify-center">
+        <div class="rounded-full bg-blue-500 text-white font-bold text-2xl w-12 h-12 flex items-center justify-center mt-4 mb-4">
+          {{ user.fullName[0] | uppercase }}
+        </div>
+      </div>
+
+      <hr class="mb-4 border-gray-300" />
+
+      <div class="grid grid-cols-2 gap-y-3 text-sm">
+        <div class="text-gray-600 font-semibold">Full Name</div>
+        <div class="text-gray-800">{{ user.fullName || '-' }}</div>
+
+        <div class="text-gray-600 font-semibold">Email</div>
+        <div class="text-gray-800">{{ user.email || '-' }}</div>
+
+        <div class="text-gray-600 font-semibold">Roles</div>
+        <div>
+          <ul class="flex flex-wrap gap-1">
+            <li *ngFor="let role of user.roles" class="bg-green-700 text-white rounded px-2 py-0.5 text-xs">
+              {{ role }}
+            </li>
+            <span *ngIf="!user.roles?.length">-</span>
+          </ul>
+        </div>
+
+        <div class="text-gray-600 font-semibold">Phone</div>
+        <div class="text-gray-800">{{ user.phoneNumber || '-' }}</div>
+
+        <div class="text-gray-600 font-semibold">Access Failed Count</div>
+        <div class="text-gray-800">{{ user.accessFailedCount }}</div>
+      </div>
+    </div>
+  </div>
+</div>

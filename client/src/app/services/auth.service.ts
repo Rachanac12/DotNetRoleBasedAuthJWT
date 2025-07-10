@@ -5,6 +5,8 @@ import { Observable, map } from 'rxjs';
 import { AuthResponse } from '../interfaces/auth-response';
 import { HttpClient } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
+import { RegisterRequest } from '../interfaces/register-request';
+import { UserDetail } from '../interfaces/user-detail';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +29,23 @@ export class AuthService {
         })
       );
   }
+
+  register(data: RegisterRequest): Observable<AuthResponse> {
+    return this.http
+      .post<AuthResponse>(`${this.apiUrl}account/register`, data)
+      .pipe(
+        map((response) => {
+          if (response.isSuccess) {
+            localStorage.setItem(this.tokenKey, response.token);
+          }
+          return response;
+        })
+      );
+  }
+  
+  getDetail = (): Observable<UserDetail> => 
+    this.http.get<UserDetail>(`${this.apiUrl}account/detail`);
+  
 
   getUserDetail = () => {
     const token = this.getToken();
@@ -61,6 +80,18 @@ export class AuthService {
     localStorage.removeItem(this.tokenKey);
   };
 
-  private getToken = (): string | null =>
+  getAll = (): Observable<UserDetail[]> => {
+    return this.http.get<UserDetail[]>(`${this.apiUrl}account`);
+  }
+
+  getRoles = (): string[] | null => {
+    const token = this.getToken();
+    if (!token) return null;
+  
+    const decodedToken: any = jwtDecode(token);
+    return decodedToken.role || null;
+  };
+
+  public getToken = (): string | null =>
     localStorage.getItem(this.tokenKey) || '';
 }
